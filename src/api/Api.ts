@@ -1,4 +1,5 @@
 import express from "express"
+import { RouteHandler } from "./route/RouteHandler"
 import { RouteManager } from "./route/RouteManager"
 
 /**
@@ -8,8 +9,8 @@ import { RouteManager } from "./route/RouteManager"
 class Api {
   private readonly routeManager: RouteManager
 
-  constructor() {
-    this.routeManager = new RouteManager()
+  constructor(routeHandlers: RouteHandler[]) {
+    this.routeManager = new RouteManager(routeHandlers)
   }
 
   /**
