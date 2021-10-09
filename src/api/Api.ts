@@ -20,6 +20,7 @@ class Api {
    */
   initialize = () => {
     const app = express()
+
     this.routeManager.configure(app)
     app.listen(this.port, () => {
       console.log("Rest Api Initialized: http://localhost:" + this.port)
