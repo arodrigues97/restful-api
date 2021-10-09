@@ -7,10 +7,10 @@ export class ArticleStore {
   /**
    * The array of articles
    */
-  readonly articles: Article[] = [
+  articles: Article[] = [
     {
       id: 1,
-      name: "Adam's Article",
+      name: "wiki",
     },
     {
       id: 2,
@@ -24,6 +24,12 @@ export class ArticleStore {
    */
   store = (article: Article) => this.articles.push(article)
 
+  update = (article: Article) => {
+    const copy = [...this.articles].filter((a) => article.id)
+    copy.push(article)
+    this.articles = copy
+  }
+
   /**
    * @returns The list of articles
    */
@@ -33,7 +39,7 @@ export class ArticleStore {
    * @param name The article name to search for
    * @returns The article
    */
-  getArticleByName = (name: string) =>
+  getArticleByName = (name: string): Article | undefined =>
     this.articles.find((article) => article.name === name)
 }
 

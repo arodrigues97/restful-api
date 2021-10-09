@@ -4,7 +4,7 @@ import { RouteHandler } from "../api/route/RouteHandler"
 import { ArticleController } from "../controllers/ArticleController"
 
 export class ArticleRoutes extends RouteHandler {
-  descriptions: RouteDescription[] = [
+  readonly descriptions: RouteDescription[] = [
     {
       route: "/articles",
       include: [HttpMethod.GET],
