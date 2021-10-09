@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express"
+import bodyParser from "body-parser"
 import { GetExpressMethodForHttp } from "./HttpMethod"
 import { RouteHandler } from "./RouteHandler"
 
@@ -19,6 +20,15 @@ export class RouteManager {
    * @param app The express app instance
    */
   configure = (app: express.Express) => {
+    //Implement json body parsing
+    app.use(express.json())
+    //Implement url encoded body parsing
+    app.use(
+      express.urlencoded({
+        extended: true,
+      })
+    )
+
     //Loop through all the route handlers
     this.handlers.forEach((handler) => {
       //Instantiates the routes by the descriptions
