@@ -39,10 +39,16 @@ export class RouteManager {
           expressMethodHandler(route.route, (req: Request, res: Response) => {
             try {
               const response = handler.connectControllerMethod(req, res, method)
-              const { status, resource } = response
-              res.status(status).json(resource)
+              const { status, resource, message } = response
+              res.status(status)
+              if (status !== 200) {
+                res.send(message || "Status Code: " + status)
+                return
+              }
+              res.json(resource)
             } catch (error) {
               res.status(500).send("Internal server error!")
+              console.error(error)
             }
           })
         })

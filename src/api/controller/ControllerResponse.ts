@@ -1,4 +1,5 @@
 export type ControllerResponse<T> = {
   status: number
-  resource: T | T[]
+  message?: string
+  resource?: T | T[]
 }

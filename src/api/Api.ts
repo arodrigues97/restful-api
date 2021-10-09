@@ -8,9 +8,11 @@ import { RouteManager } from "./route/RouteManager"
  */
 class Api {
   private readonly routeManager: RouteManager
+  port: number
 
-  constructor(routeHandlers: RouteHandler[]) {
+  constructor(routeHandlers: RouteHandler[], port: number) {
     this.routeManager = new RouteManager(routeHandlers)
+    this.port = port
   }
 
   /**
@@ -18,10 +20,9 @@ class Api {
    */
   initialize = () => {
     const app = express()
-    const port = 3001
     this.routeManager.configure(app)
-    app.listen(port, () => {
-      console.log("Rest Api Initialized: http://localhost:" + port)
+    app.listen(this.port, () => {
+      console.log("Rest Api Initialized: http://localhost:" + this.port)
     })
   }
 }

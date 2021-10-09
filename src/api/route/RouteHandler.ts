@@ -84,17 +84,30 @@ export abstract class RouteHandler {
     httpMethod: HttpMethod
   ): ControllerResponse<any> => {
     const context = this.controller.createContext(req, res)
+    let controllerMethod = this.getControllerMethodByType(httpMethod, req)
+    if (!controllerMethod) {
+      throw Error(
+        "Http method - " + httpMethod + " does not exist on controller!"
+      )
+    }
+    return controllerMethod(context)
+  }
+
+  getControllerMethodByType = (httpMethod: HttpMethod, req: Request) => {
     switch (httpMethod) {
       case HttpMethod.GET:
-        return this.controller.get(context)
+        if (Object.keys(req.params).length > 0) {
+          return this.controller.index
+        }
+        return this.controller.show
       case HttpMethod.POST:
-        return this.controller.create(context)
+        return this.controller.create
       case HttpMethod.PATCH:
-        return this.controller.patch(context)
+        return this.controller.patch
       case HttpMethod.PUT:
-        return this.controller.put(context)
+        return this.controller.put
       case HttpMethod.DELETE:
-        return this.controller.delete(context)
+        return this.controller.delete
     }
   }
 }

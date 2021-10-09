@@ -5,7 +5,7 @@ import Api from "./api/Api"
 const routes = [new ArticleRoutes()]
 
 //Instantiate the api
-const api = new Api(routes)
+const api = new Api(routes, 9090)
 
 //Initialize the app
 api.initialize()
