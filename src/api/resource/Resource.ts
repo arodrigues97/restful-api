@@ -1,5 +1,1 @@
-
-
-export class Resource {
-    
-}
+export class Resource {}
