@@ -18,12 +18,14 @@ export class ArticleController extends BaseController<ArticleResponse> {
   }
   put(context: Context): ArticleResponse {
     const article = articleStore.getArticleByName(context.req.params.name)
+    const content = context.req.body
 
     //If the article exists update it
     if (article) {
       articleStore.update({
-        id: 1,
-        name: "Lol",
+        id: article.id,
+        name: article.name,
+        content,
       })
       return {
         status: 200,
@@ -32,8 +34,9 @@ export class ArticleController extends BaseController<ArticleResponse> {
 
     //If the article didn't exist create a new article
     articleStore.store({
-      id: 1,
-      name: "Lol2",
+      id: articleStore.articles.length + 1,
+      name: "wiki",
+      content,
     })
     return {
       status: 200,

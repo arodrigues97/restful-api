@@ -11,10 +11,12 @@ export class ArticleStore {
     {
       id: 1,
       name: "wiki",
+      content: "Wiki content",
     },
     {
       id: 2,
-      name: "Dmitri's Article",
+      name: "rest_api",
+      content: "Rest api content",
     },
   ]
 
@@ -25,7 +27,7 @@ export class ArticleStore {
   store = (article: Article) => this.articles.push(article)
 
   update = (article: Article) => {
-    const copy = [...this.articles].filter((a) => article.id)
+    const copy = [...this.articles].filter((a) => a.id !== article.id)
     copy.push(article)
     this.articles = copy
   }
