@@ -17,7 +17,16 @@ export class ArticleController extends BaseController<ArticleResponse> {
     throw new Error("Method not implemented.")
   }
   put(context: Context): ArticleResponse {
-    const article = articleStore.getArticleByName(context.req.params.name)
+    const name = context.req.params.name
+
+    if (!name || name.trim().length === 0) {
+      return {
+        status: 400,
+        message: "Invalid parameter.",
+      }
+    }
+
+    const article = articleStore.getArticleByName(name)
     const content = context.req.body
 
     //If the article exists update it
@@ -35,7 +44,7 @@ export class ArticleController extends BaseController<ArticleResponse> {
     //If the article didn't exist create a new article
     articleStore.store({
       id: articleStore.articles.length + 1,
-      name: "wiki",
+      name: name,
       content,
     })
     return {
