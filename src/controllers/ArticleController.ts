@@ -4,13 +4,13 @@ import { ControllerResponse } from "./../api/controller/ControllerResponse"
 import { Article } from "./../resource/Article"
 import { articleStore } from "./../store/ArticleStore"
 
-type ArticleResponse = ControllerResponse<Article>
+type ArticleResponse = ControllerResponse<Article | string | string[]>
 
 export class ArticleController extends BaseController<ArticleResponse> {
   show(context: Context): ArticleResponse {
     return {
       status: 200,
-      resource: articleStore.articles,
+      resource: articleStore.articles.map((a) => a.name),
     }
   }
   create(context: Context): ArticleResponse {
@@ -51,15 +51,19 @@ export class ArticleController extends BaseController<ArticleResponse> {
   index(context: Context): ArticleResponse {
     const { params } = context.req
     const article = articleStore.getArticleByName(params.name)
+
+    //If the article doesn't exist then respond with 404
     if (!article) {
       return {
         status: 404,
         message: "404 Not found - No Payload.",
       }
     }
+
+    //Else return with the article content
     return {
       status: 200,
-      resource: article,
+      resource: article.content,
     }
   }
 }
