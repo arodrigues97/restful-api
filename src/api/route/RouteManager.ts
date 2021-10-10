@@ -51,11 +51,21 @@ export class RouteManager {
               const response = handler.connectControllerMethod(req, res, method)
               const { status, resource, message } = response
               res.status(status)
+
+              //Response back with the status code for any NON 200
               if (status !== 200) {
                 res.send(message || "Status Code: " + status)
                 return
               }
-              res.json(resource)
+
+              //If the resource returned from the controller is just a string send as so
+              if (typeof resource === "string") {
+                res.send(resource)
+
+                //Else we will send it as json
+              } else {
+                res.json(resource)
+              }
             } catch (error) {
               res.status(500).send("Internal server error!")
               console.error(error)
