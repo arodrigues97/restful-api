@@ -1,8 +1,8 @@
-import { articleStore } from "./../src/store/ArticleStore"
-import { routes } from "./../src/index"
 import superTest from "supertest"
-import { Article } from "../src/resource/Article"
 import Api from "../src/api/Api"
+import { Article } from "../src/resource/Article"
+import { routes } from "../src/routes"
+import { articleStore } from "./../src/store/ArticleStore"
 
 const mockData: Article[] = [
   {
@@ -22,7 +22,7 @@ const mockData: Article[] = [
 describe("Article Controller", () => {
   articleStore.configureMockData(mockData)
 
-  const api = new Api(routes, 9091)
+  const api = new Api(routes, 9092)
   api.configureRoutes()
   const request = superTest(api.getExpressApp())
 
@@ -58,9 +58,7 @@ describe("Article Controller", () => {
     test("create article", async () => {
       await request
         .put("/articles/test")
-        .send({
-          content: mockData[0].content,
-        })
+        .send(mockData[0].content)
         .expect(201)
     })
 
@@ -68,20 +66,24 @@ describe("Article Controller", () => {
     test("update article", async () => {
       await request
         .put("/articles/" + mockData[0].name)
-        .send({
-          content: "Test Data",
-        })
+        .send("Update article content")
         .expect(200)
+
+        
     })
   })
 
-  //
-  test("GET /articles/:name", async () => {
-    //Found article
-    const foundArticle = await request.get("/articles/Test").expect(200)
-    console.log(foundArticle.body)
+  describe("GET /articles/:name", () => {
+    test("return successfull found article", async () => {
+      //Found article
+      const foundArticle = await request.get("/articles/" + mockData[0].name).expect(200).expect("Content-Type", "text/html; charset=utf-8")
+      expect(foundArticle.text).toEqual(articleStore.getArticleByName(mockData[0].name)?.content)
+    })
 
-    //Not found article
-    await request.get("/articles/unknown").expect(404)
+    test("return 404 not found", async () => {
+      //Not found article
+      await request.get("/articles/unknown").expect(404)
+    })
   })
+  
 })

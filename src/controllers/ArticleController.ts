@@ -29,6 +29,14 @@ export class ArticleController extends BaseController<ArticleResponse> {
     const article = articleStore.getArticleByName(name)
     const content = context.req.body
 
+
+    if (typeof content !== "string") {
+      return {
+       status: 400,
+       message: "Invalid body." 
+      }
+    }
+
     //If the article exists update it
     if (article) {
       articleStore.update({
@@ -72,7 +80,7 @@ export class ArticleController extends BaseController<ArticleResponse> {
     //Else return with the article content
     return {
       status: 200,
-      resource: article.content,
+      resource: article.content
     }
   }
 }
