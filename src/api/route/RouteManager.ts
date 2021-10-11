@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express"
 import { GetExpressMethodForHttp } from "./HttpMethod"
 import { RouteHandler } from "./RouteHandler"
+import cors from "cors"
 
 export class RouteManager {
   readonly handlers: RouteHandler[]
@@ -19,6 +20,8 @@ export class RouteManager {
    * @param app The express app instance
    */
   configure = (app: express.Express) => {
+
+    app.use(cors())
 
     //Parse body as raw from curl command
     app.use(function(req, res, next) {
