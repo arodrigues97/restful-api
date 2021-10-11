@@ -8,24 +8,31 @@ import { RouteManager } from "./route/RouteManager"
  */
 class Api {
   private readonly routeManager: RouteManager
-  port: number
+  private readonly port: number
+  private readonly app: express.Express
 
   constructor(routeHandlers: RouteHandler[], port: number) {
     this.routeManager = new RouteManager(routeHandlers)
     this.port = port
+    this.app = express()
+  }
+
+  configureRoutes = () => {
+    this.routeManager.configure(this.app)
   }
 
   /**
    * Initializes the api
    */
   initialize = () => {
-    const app = express()
-
-    this.routeManager.configure(app)
-    app.listen(this.port, () => {
+    this.configureRoutes()
+    this.app.listen(this.port, () => {
       console.log("Rest Api Initialized: http://localhost:" + this.port)
     })
   }
+
+  getExpressApp = () => this.app
+  getRouteManager = () => this.routeManager
 }
 
 export default Api

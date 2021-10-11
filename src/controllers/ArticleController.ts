@@ -48,7 +48,7 @@ export class ArticleController extends BaseController<ArticleResponse> {
       content,
     })
     return {
-      status: 200,
+      status: 201,
     }
   }
   patch(context: Context): ArticleResponse {

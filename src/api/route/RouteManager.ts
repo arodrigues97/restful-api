@@ -53,7 +53,7 @@ export class RouteManager {
               res.status(status)
 
               //Response back with the status code for any NON 200
-              if (status !== 200) {
+              if (!resource) {
                 res.send(message || "Status Code: " + status)
                 return
               }
@@ -61,7 +61,6 @@ export class RouteManager {
               //If the resource returned from the controller is just a string send as so
               if (typeof resource === "string") {
                 res.send(resource)
-
                 //Else we will send it as json
               } else {
                 res.json(resource)

@@ -20,12 +20,20 @@ export class ArticleStore {
     },
   ]
 
+  configureMockData = (mockData: Article[]) => {
+    this.articles = mockData
+  }
+
   /**
-   * Stores an article to the article sotrage lsit
+   * Stores an article to the article storage lsit
    * @param article The article to store
    */
   store = (article: Article) => this.articles.push(article)
 
+  /**
+   * Updates an existing article in the store
+   * @param article The article to update
+   */
   update = (article: Article) => {
     const copy = [...this.articles].filter((a) => a.id !== article.id)
     copy.push(article)
